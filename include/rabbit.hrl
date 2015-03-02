@@ -92,12 +92,12 @@
 
 -record(message_properties, {expiry :: term(), needs_confirming = false :: boolean(), size :: integer()}).
 
--record(plugin, {name :: atom(),                      %% atom()
-                 version :: string(),                 %% string()
-                 description :: string(),             %% string()
-                 type :: atom(),                      %% 'ez' or 'dir'
-                 dependencies: [{atom(), string()}],  %% [{atom(), string()}]
-                 location :: string()}).              %% string()
+-record(plugin, {name :: atom(),                       %% atom()
+                 version :: string(),                  %% string()
+                 description :: string(),              %% string()
+                 type :: atom(),                       %% 'ez' or 'dir'
+                 dependencies :: [{atom(), string()}], %% [{atom(), string()}]
+                 location :: string()}).               %% string()
 
 %%----------------------------------------------------------------------------
 
