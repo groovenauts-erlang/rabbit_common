@@ -58,7 +58,7 @@
           client_properties :: term(),
           mechanism = <<"PLAIN">> :: binary(),
           response :: term(),
-          locale = <<"en_US">>, binary()
+          locale = <<"en_US">> :: binary()
          }).
 -record('connection.secure', {
           challenge :: term()
