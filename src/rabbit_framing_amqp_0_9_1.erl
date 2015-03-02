@@ -118,44 +118,44 @@
        | #'tx.select_ok'{} | #'tx.commit'{} | #'tx.commit_ok'{} | #'tx.rollback'{}
        | #'tx.rollback_ok'{} | #'confirm.select'{} | #'confirm.select_ok'{} )).
 -type(amqp_method_field_name() ::
-       ( exchange | active | exchange | routing_key
-       | message_count | nowait | ticket | queue
-       | server_properties | redelivered | passive | heartbeat
-       | durable | exclusive | auto_delete | nowait
-       | arguments | exchange | mechanisms | delivery_tag
-       | queue | message_count | consumer_count | requeue
-       | routing_key | ticket | queue | consumer_tag
-       | exchange | routing_key | nowait | arguments
-       | delivery_tag | multiple | requeue | routing_key
-       | ticket | consumer_tag | prefetch_count | queue
-       | insist | nowait | reply_text | drain
-       | consumer_tag | message_count | available | consumer_tag
-       | nowait | ticket | queue | if_unused
-       | if_empty | nowait | response | cluster_id
-       | known_hosts | message_count | exchange | ticket
-       | credit | redelivered | locale | exchange
-       | routing_key | arguments | consumer_tag | nowait
-       | reply_code | out_of_band | channel_id | delivery_tag
-       | reply_text | prefetch_size | passive | active
-       | requeue | global | active | ticket
-       | reply_code | reply_text | queue | class_id
-       | method_id | routing_key | consumer_tag | no_local
-       | no_ack | queue | realm | auto_delete
-       | exclusive | version_major | version_minor | write
-       | read | exchange | locales | ticket
-       | ticket | client_properties | arguments | mechanism
-       | ticket | exchange | queue | type
-       | nowait | challenge | durable | consumer_tag
-       | response | credit_drained | internal | channel_max
-       | arguments | frame_max | reason | heartbeat
-       | channel_max | frame_max | if_unused | exclusive
-       | nowait | immediate | virtual_host | capabilities
-       | delivery_tag | ticket | destination | source
-       | routing_key | multiple | nowait | arguments
-       | class_id | mandatory | method_id | ticket
-       | passive | delivery_tag | destination | ticket
-       | source | requeue | ticket | routing_key
-       | no_ack | nowait | arguments | reply_code )).
+       ( no_ack | realm | exclusive | passive
+       | active | write | read | message_count
+       | exclusive | ticket | routing_key | ticket
+       | exchange | nowait | type | passive
+       | durable | auto_delete | internal | nowait
+       | arguments | arguments | nowait | ticket
+       | exchange | delivery_tag | if_unused | nowait
+       | redelivered | nowait | ticket | ticket
+       | destination | mandatory | source | queue
+       | requeue | server_properties | routing_key | nowait
+       | arguments | nowait | reply_code | ticket
+       | queue | routing_key | destination | source
+       | routing_key | nowait | arguments | if_empty
+       | immediate | exchange | message_count | ticket
+       | queue | passive | prefetch_count | durable
+       | credit_drained | ticket | exclusive | auto_delete
+       | nowait | arguments | nowait | queue
+       | consumer_tag | message_count | drain | consumer_count
+       | version_major | mechanism | cluster_id | version_minor
+       | ticket | reply_text | mechanisms | locales
+       | routing_key | delivery_tag | client_properties | message_count
+       | arguments | response | locale | multiple
+       | consumer_tag | consumer_tag | challenge | ticket
+       | multiple | queue | nowait | channel_max
+       | frame_max | heartbeat | available | exchange
+       | channel_max | delivery_tag | frame_max | heartbeat
+       | if_unused | virtual_host | exchange | requeue
+       | capabilities | ticket | insist | ticket
+       | consumer_tag | known_hosts | redelivered | reply_code
+       | reply_text | credit | queue | consumer_tag
+       | class_id | queue | method_id | routing_key
+       | arguments | reason | exchange | response
+       | exchange | requeue | delivery_tag | out_of_band
+       | exchange | channel_id | prefetch_size | ticket
+       | active | delivery_tag | global | active
+       | reply_code | reply_text | routing_key | routing_key
+       | requeue | class_id | queue | method_id
+       | consumer_tag | consumer_tag | no_local | no_ack )).
 -type(amqp_property_record() ::
        ( #'P_connection'{} | #'P_channel'{} | #'P_access'{} | #'P_exchange'{}
        | #'P_queue'{} | #'P_basic'{} | #'P_tx'{} | #'P_confirm'{} )).
