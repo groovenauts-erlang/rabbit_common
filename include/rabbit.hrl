@@ -67,7 +67,7 @@
 -record(reverse_route, {reverse_binding :: binary(), value = const :: atom()}).
 
 -record(binding, {source :: binary(), key :: binary(), destination :: binary(), args = [] :: list()}).
--record(reverse_binding, {destination :: binary(), key :: binary(), source :: binary(), args = []}).
+-record(reverse_binding, {destination :: binary(), key :: binary(), source :: binary(), args = [] :: list()}).
 
 -record(topic_trie_node, {trie_node :: term(), edge_count :: integer(), binding_count :: integer()}).
 -record(topic_trie_edge, {trie_edge :: term(), node_id :: term()}).
