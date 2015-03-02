@@ -47,122 +47,478 @@
 -define(FRAME_TRACE, 7).
 -define(NOT_DELIVERED, 310).
 %% Method field records.
--record('connection.start', {version_major = 0, version_minor = 9, server_properties, mechanisms = <<"PLAIN">>, locales = <<"en_US">>}).
--record('connection.start_ok', {client_properties, mechanism = <<"PLAIN">>, response, locale = <<"en_US">>}).
--record('connection.secure', {challenge}).
--record('connection.secure_ok', {response}).
--record('connection.tune', {channel_max = 0, frame_max = 0, heartbeat = 0}).
--record('connection.tune_ok', {channel_max = 0, frame_max = 0, heartbeat = 0}).
--record('connection.open', {virtual_host = <<"/">>, capabilities = <<"">>, insist = false}).
--record('connection.open_ok', {known_hosts = <<"">>}).
--record('connection.close', {reply_code, reply_text = <<"">>, class_id, method_id}).
+-record('connection.start', {
+          version_major = 0 :: integer(),
+          version_minor = 9 :: integer(),
+          server_properties :: term(),
+          mechanisms = <<"PLAIN">> :: binary(),
+          locales = <<"en_US">> :: binary()
+         }).
+-record('connection.start_ok', {
+          client_properties :: term(),
+          mechanism = <<"PLAIN">> :: binary(),
+          response :: term(),
+          locale = <<"en_US">>, binary()
+         }).
+-record('connection.secure', {
+          challenge :: term()
+         }).
+-record('connection.secure_ok', {
+          response :: term()
+         }).
+-record('connection.tune', {
+          channel_max = 0 :: integer(),
+          frame_max = 0 :: integer(),
+          heartbeat = 0 :: integer()
+         }).
+-record('connection.tune_ok', {
+          channel_max = 0 :: integer(),
+          frame_max = 0 :: integer(),
+          heartbeat = 0 :: integer()
+         }).
+-record('connection.open', {
+          virtual_host = <<"/">> :: binary(),
+          capabilities = <<"">> :: binary(),
+          insist = false :: boolean()
+         }).
+-record('connection.open_ok', {
+          known_hosts = <<"">> :: binary()
+         }).
+-record('connection.close', {
+          reply_code :: term(),
+          reply_text = <<"">> :: binary(),
+          class_id :: integer(),
+          method_id :: integer()
+         }).
 -record('connection.close_ok', {}).
--record('connection.blocked', {reason = <<"">>}).
+-record('connection.blocked', {
+          reason = <<"">> :: binary
+         }).
 -record('connection.unblocked', {}).
--record('connection.redirect', {host, known_hosts = <<"">>}).
--record('channel.open', {out_of_band = <<"">>}).
--record('channel.open_ok', {channel_id = <<"">>}).
--record('channel.flow', {active}).
--record('channel.flow_ok', {active}).
--record('channel.close', {reply_code, reply_text = <<"">>, class_id, method_id}).
+-record('connection.redirect', {
+          host :: binary(),
+          known_hosts = <<"">> :: binary()
+         }).
+-record('channel.open', {
+          out_of_band = <<"">> :: binary()
+         }).
+-record('channel.open_ok', {
+          channel_id = <<"">> :: binary()
+         }).
+-record('channel.flow', {
+          active :: boolean()
+         }).
+-record('channel.flow_ok', {
+          active :: boolean()
+         }).
+-record('channel.close', {
+          reply_code :: integer(),
+          reply_text = <<"">> :: binary(),
+          class_id :: integer(),
+          method_id :: integer()
+         }).
 -record('channel.close_ok', {}).
--record('channel.alert', {reply_code, reply_text = <<"">>, details = []}).
--record('access.request', {realm = <<"/data">>, exclusive = false, passive = true, active = true, write = true, read = true}).
--record('access.request_ok', {ticket = 1}).
--record('exchange.declare', {ticket = 0, exchange, type = <<"direct">>, passive = false, durable = false, auto_delete = false, internal = false, nowait = false, arguments = []}).
+-record('channel.alert', {
+          reply_code :: integer(),
+          reply_text = <<"">> :: binary(),
+          details = [] :: list()
+         }).
+-record('access.request', {
+          realm = <<"/data">> :: binary(),
+          exclusive = false :: boolean(),
+          passive = true :: boolean(),
+          active = true :: boolean(),
+          write = true :: boolean(),
+          read = true :: boolean()
+         }).
+-record('access.request_ok', {
+          ticket = 1 :: integer()
+         }).
+-record('exchange.declare', {
+          ticket = 0 :: integer(),
+          exchange :: binary(),
+          type = <<"direct">> :: binary(),
+          passive = false :: boolean(),
+          durable = false :: boolean(),
+          auto_delete = false :: boolean(),
+          internal = false :: boolean(),
+          nowait = false :: boolean(),
+          arguments = [] :: list()
+         }).
 -record('exchange.declare_ok', {}).
--record('exchange.delete', {ticket = 0, exchange, if_unused = false, nowait = false}).
+-record('exchange.delete', {
+          ticket = 0 :: integer(),
+          exchange :: binary(),
+          if_unused = false :: boolean(),
+          nowait = false :: boolean()
+         }).
 -record('exchange.delete_ok', {}).
--record('exchange.bind', {ticket = 0, destination, source, routing_key = <<"">>, nowait = false, arguments = []}).
+-record('exchange.bind', {
+          ticket = 0 :: integer(),
+          destination :: binary(),
+          source :: binary(),
+          routing_key = <<"">> :: binary(),
+          nowait = false :: boolean(),
+          arguments = [] :: list()
+         }).
 -record('exchange.bind_ok', {}).
--record('exchange.unbind', {ticket = 0, destination, source, routing_key = <<"">>, nowait = false, arguments = []}).
+-record('exchange.unbind', {
+          ticket = 0 :: boolean(),
+          destination :: binary(),
+          source :: binary(),
+          routing_key = <<"">> :: binary(),
+          nowait = false :: boolean(),
+          arguments = [] :: list()
+         }).
 -record('exchange.unbind_ok', {}).
--record('queue.declare', {ticket = 0, queue = <<"">>, passive = false, durable = false, exclusive = false, auto_delete = false, nowait = false, arguments = []}).
--record('queue.declare_ok', {queue, message_count, consumer_count}).
--record('queue.bind', {ticket = 0, queue = <<"">>, exchange, routing_key = <<"">>, nowait = false, arguments = []}).
+-record('queue.declare', {
+          ticket = 0 :: integer(),
+          queue = <<"">> :: binary(),
+          passive = false :: boolean(),
+          durable = false :: boolean(),
+          exclusive = false :: boolean(),
+          auto_delete = false :: boolean(),
+          nowait = false :: boolean(),
+          arguments = [] :: list()
+         }).
+-record('queue.declare_ok', {
+          queue :: binary(),
+          message_count :: integer(),
+          consumer_count :: integer()
+         }).
+-record('queue.bind', {
+          ticket = 0 :: integer(),
+          queue = <<"">> :: binary(),
+          exchange :: binary(),
+          routing_key = <<"">> :: binary(),
+          nowait = false :: boolean(),
+          arguments = [] :: list()
+         }).
 -record('queue.bind_ok', {}).
--record('queue.purge', {ticket = 0, queue = <<"">>, nowait = false}).
--record('queue.purge_ok', {message_count}).
--record('queue.delete', {ticket = 0, queue = <<"">>, if_unused = false, if_empty = false, nowait = false}).
--record('queue.delete_ok', {message_count}).
--record('queue.unbind', {ticket = 0, queue = <<"">>, exchange, routing_key = <<"">>, arguments = []}).
+-record('queue.purge', {
+          ticket = 0 :: integer(),
+          queue = <<"">> :: binary(),
+          nowait = false :: boolean()
+         }).
+-record('queue.purge_ok', {
+          message_count :: integer()
+         }).
+-record('queue.delete', {
+          ticket = 0 :: integer(),
+          queue = <<"">> :: binary(),
+          if_unused = false :: boolean(),
+          if_empty = false :: boolean(),
+          nowait = false :: boolean()
+         }).
+-record('queue.delete_ok', {
+          message_count :: integer()
+         }).
+-record('queue.unbind', {
+          ticket = 0 :: integer(),
+          queue = <<"">> :: binary(),
+          exchange :: binary(),
+          routing_key = <<"">> :: binary(),
+          arguments = [] :: list()
+         }).
 -record('queue.unbind_ok', {}).
--record('basic.qos', {prefetch_size = 0, prefetch_count = 0, global = false}).
+-record('basic.qos', {
+          prefetch_size = 0 :: integer(),
+          prefetch_count = 0 :: integer(),
+          global = false :: boolean()
+         }).
 -record('basic.qos_ok', {}).
--record('basic.consume', {ticket = 0, queue = <<"">>, consumer_tag = <<"">>, no_local = false, no_ack = false, exclusive = false, nowait = false, arguments = []}).
--record('basic.consume_ok', {consumer_tag}).
--record('basic.cancel', {consumer_tag, nowait = false}).
--record('basic.cancel_ok', {consumer_tag}).
--record('basic.publish', {ticket = 0, exchange = <<"">>, routing_key = <<"">>, mandatory = false, immediate = false}).
--record('basic.return', {reply_code, reply_text = <<"">>, exchange, routing_key}).
--record('basic.deliver', {consumer_tag, delivery_tag, redelivered = false, exchange, routing_key}).
--record('basic.get', {ticket = 0, queue = <<"">>, no_ack = false}).
--record('basic.get_ok', {delivery_tag, redelivered = false, exchange, routing_key, message_count}).
--record('basic.get_empty', {cluster_id = <<"">>}).
--record('basic.ack', {delivery_tag = 0, multiple = false}).
--record('basic.reject', {delivery_tag, requeue = true}).
--record('basic.recover_async', {requeue = false}).
--record('basic.recover', {requeue = false}).
+-record('basic.consume', {
+          ticket = 0 :: integer(),
+          queue = <<"">> :: binary(),
+          consumer_tag = <<"">> :: binary(),
+          no_local = false :: boolean(),
+          no_ack = false :: boolean(),
+          exclusive = false :: boolean(),
+          nowait = false :: boolean(),
+          arguments = [] :: list()
+         }).
+-record('basic.consume_ok', {
+          consumer_tag :: binary()
+         }).
+-record('basic.cancel', {
+          consumer_tag :: binary(),
+          nowait = false :: boolean()
+         }).
+-record('basic.cancel_ok', {
+          consumer_tag :: binary()
+         }).
+-record('basic.publish', {
+          ticket = 0 :: integer(),
+          exchange = <<"">> :: binary(),
+          routing_key = <<"">> :: binary(),
+          mandatory = false :: boolean(),
+          immediate = false :: boolean()
+         }).
+-record('basic.return', {
+          reply_code :: integer(),
+          reply_text = <<"">> :: binary(),
+          exchange :: binary(),
+          routing_key :: binary()
+         }).
+-record('basic.deliver', {
+          consumer_tag :: binary(),
+          delivery_tag :: integer(),
+          redelivered = false :: boolean(),
+          exchange :: binary(),
+          routing_key :: binary()
+         }).
+-record('basic.get', {
+          ticket = 0 :: integer(),
+          queue = <<"">> :: binary(),
+          no_ack = false :: boolean()
+         }).
+-record('basic.get_ok', {
+          delivery_tag :: integer(),
+          redelivered = false :: boolean(),
+          exchange :: binary(),
+          routing_key :: binary(),
+          message_count :: integer()
+         }).
+-record('basic.get_empty', {
+          cluster_id = <<"">> :: binary()
+         }).
+-record('basic.ack', {
+          delivery_tag = 0 :: integer(),
+          multiple = false :: boolean()
+         }).
+-record('basic.reject', {
+          delivery_tag :: integer(),
+          requeue = true :: boolean()
+         }).
+-record('basic.recover_async', {
+          requeue = false :: boolean()
+         }).
+-record('basic.recover', {
+          requeue = false :: boolean()
+         }).
 -record('basic.recover_ok', {}).
--record('basic.nack', {delivery_tag = 0, multiple = false, requeue = true}).
--record('basic.credit', {consumer_tag = <<"">>, credit, drain}).
--record('basic.credit_ok', {available}).
--record('basic.credit_drained', {consumer_tag = <<"">>, credit_drained}).
+-record('basic.nack', {
+          delivery_tag = 0 :: integer(),
+          multiple = false :: integer(),
+          requeue = true :: integer()
+         }).
+-record('basic.credit', {
+          consumer_tag = <<"">> :: binary(),
+          credit :: integer(),
+          drain :: integer()
+         }).
+-record('basic.credit_ok', {
+          available :: boolean()
+         }).
+-record('basic.credit_drained', {
+          consumer_tag = <<"">> :: binary(),
+          credit_drained :: boolean()
+         }).
 -record('tx.select', {}).
 -record('tx.select_ok', {}).
 -record('tx.commit', {}).
 -record('tx.commit_ok', {}).
 -record('tx.rollback', {}).
 -record('tx.rollback_ok', {}).
--record('confirm.select', {nowait = false}).
+-record('confirm.select', {
+          nowait = false :: boolean()
+         }).
 -record('confirm.select_ok', {}).
--record('file.qos', {prefetch_size = 0, prefetch_count = 0, global = false}).
+-record('file.qos', {
+          prefetch_size = 0 :: integer(),
+          prefetch_count = 0 :: integer(),
+          global = false :: boolean()
+         }).
 -record('file.qos_ok', {}).
--record('file.consume', {ticket = 1, queue = <<"">>, consumer_tag = <<"">>, no_local = false, no_ack = false, exclusive = false, nowait = false}).
--record('file.consume_ok', {consumer_tag}).
--record('file.cancel', {consumer_tag, nowait = false}).
--record('file.cancel_ok', {consumer_tag}).
--record('file.open', {identifier, content_size}).
--record('file.open_ok', {staged_size}).
+-record('file.consume', {
+          ticket = 1 :: integer(),
+          queue = <<"">> :: binary(),
+          consumer_tag = <<"">> :: binary(),
+          no_local = false :: boolean(),
+          no_ack = false :: boolean(),
+          exclusive = false :: boolean(),
+          nowait = false :: boolean()
+         }).
+-record('file.consume_ok', {
+          consumer_tag :: binary()
+         }).
+-record('file.cancel', {
+          consumer_tag :: binary(),
+          nowait = false :: boolean()
+         }).
+-record('file.cancel_ok', {
+          consumer_tag :: binary()
+         }).
+-record('file.open', {
+          identifier :: binary(),
+          content_size :: integer()
+         }).
+-record('file.open_ok', {
+          staged_size :: integer()
+         }).
 -record('file.stage', {}).
--record('file.publish', {ticket = 1, exchange = <<"">>, routing_key = <<"">>, mandatory = false, immediate = false, identifier}).
--record('file.return', {reply_code = 200, reply_text = <<"">>, exchange, routing_key}).
--record('file.deliver', {consumer_tag, delivery_tag, redelivered = false, exchange, routing_key, identifier}).
--record('file.ack', {delivery_tag = 0, multiple = false}).
--record('file.reject', {delivery_tag, requeue = true}).
--record('stream.qos', {prefetch_size = 0, prefetch_count = 0, consume_rate = 0, global = false}).
+-record('file.publish', {
+          ticket = 1 :: integer(),
+          exchange = <<"">> :: binary(),
+          routing_key = <<"">> :: binary(),
+          mandatory = false :: boolean(),
+          immediate = false :: boolean(),
+          identifier :: binary()
+         }).
+-record('file.return', {
+          reply_code = 200 :: integer(),
+          reply_text = <<"">> :: binary(),
+          exchange :: binary(),
+          routing_key :: binary()
+         }).
+-record('file.deliver', {
+          consumer_tag :: binary(),
+          delivery_tag :: integer(),
+          redelivered = false :: boolean(),
+          exchange :: binary(),
+          routing_key :: binary(),
+          identifier :: binary()
+         }).
+-record('file.ack', {
+          delivery_tag = 0 :: integer(),
+          multiple = false :: boolean()
+         }).
+-record('file.reject', {
+          delivery_tag :: integer(),
+          requeue = true :: boolean()
+         }).
+-record('stream.qos', {
+          prefetch_size = 0 :: integer(),
+          prefetch_count = 0 :: integer(),
+          consume_rate = 0 :: integer(),
+          global = false :: boolean()
+         }).
 -record('stream.qos_ok', {}).
--record('stream.consume', {ticket = 1, queue = <<"">>, consumer_tag = <<"">>, no_local = false, exclusive = false, nowait = false}).
--record('stream.consume_ok', {consumer_tag}).
--record('stream.cancel', {consumer_tag, nowait = false}).
--record('stream.cancel_ok', {consumer_tag}).
--record('stream.publish', {ticket = 1, exchange = <<"">>, routing_key = <<"">>, mandatory = false, immediate = false}).
--record('stream.return', {reply_code = 200, reply_text = <<"">>, exchange, routing_key}).
--record('stream.deliver', {consumer_tag, delivery_tag, exchange, queue}).
+-record('stream.consume', {
+          ticket = 1 :: integer(),
+          queue = <<"">> :: binary(),
+          consumer_tag = <<"">> :: binary(),
+          no_local = false :: boolean(),
+          exclusive = false :: boolean(),
+          nowait = false :: boolean()
+         }).
+-record('stream.consume_ok', {
+          consumer_tag :: binary()
+         }).
+-record('stream.cancel', {
+          consumer_tag :: binary(),
+          nowait = false :: boolean()
+         }).
+-record('stream.cancel_ok', {
+          consumer_tag :: binary()
+         }).
+-record('stream.publish', {
+          ticket = 1 :: integer(),
+          exchange = <<"">> :: binary(),
+          routing_key = <<"">> :: binary(),
+          mandatory = false :: boolean(),
+          immediate = false :: boolean()
+         }).
+-record('stream.return', {
+          reply_code = 200 :: integer(),
+          reply_text = <<"">> :: binary(),
+          exchange :: binary(),
+          routing_key :: binary()
+         }).
+-record('stream.deliver', {
+          consumer_tag :: binary(),
+          delivery_tag :: integer(),
+          exchange :: binary(),
+          queue :: binary()
+         }).
 -record('dtx.select', {}).
 -record('dtx.select_ok', {}).
--record('dtx.start', {dtx_identifier}).
+-record('dtx.start', {
+          dtx_identifier :: binary()
+         }).
 -record('dtx.start_ok', {}).
--record('tunnel.request', {meta_data}).
--record('test.integer', {integer_1, integer_2, integer_3, integer_4, operation}).
--record('test.integer_ok', {result}).
--record('test.string', {string_1, string_2, operation}).
--record('test.string_ok', {result}).
--record('test.table', {table, integer_op, string_op}).
--record('test.table_ok', {integer_result, string_result}).
+-record('tunnel.request', {
+          meta_data :: rabbit_framing:amqp_table()
+         }).
+-record('test.integer', {
+          integer_1 :: integer(),
+          integer_2 :: integer(),
+          integer_3 :: integer(),
+          integer_4 :: integer(),
+          operation  :: integer()
+         }).
+-record('test.integer_ok', {
+          result :: integer()
+         }).
+-record('test.string', {
+          string_1 :: string(),
+          string_2 :: string(),
+          operation :: string()
+         }).
+-record('test.string_ok', {
+          result :: string()
+         }).
+-record('test.table', {
+          table :: rabbit_framing:amqp_table(),
+          integer_op :: integer(),
+          string_op :: string()
+         }).
+-record('test.table_ok', {
+          integer_result :: integer(),
+          string_result :: string()
+         }).
 -record('test.content', {}).
--record('test.content_ok', {content_checksum}).
+-record('test.content_ok', {
+          content_checksum :: integer()
+         }).
 %% Class property records.
 -record('P_connection', {}).
 -record('P_channel', {}).
 -record('P_access', {}).
 -record('P_exchange', {}).
 -record('P_queue', {}).
--record('P_basic', {content_type, content_encoding, headers, delivery_mode, priority, correlation_id, reply_to, expiration, message_id, timestamp, type, user_id, app_id, cluster_id}).
+-record('P_basic', {
+          content_type :: binary(),
+          content_encoding :: binary(),
+          headers :: term(),
+          delivery_mode :: term(),
+          priority :: term(),
+          correlation_id :: binary(),
+          reply_to :: binary(),
+          expiration :: binary(),
+          message_id :: integer(),
+          timestamp :: term(),
+          type :: term(),
+          user_id :: term(),
+          app_id :: term(),
+          cluster_id :: term()
+         }).
 -record('P_tx', {}).
 -record('P_confirm', {}).
--record('P_file', {content_type, content_encoding, headers, priority, reply_to, message_id, filename, timestamp, cluster_id}).
--record('P_stream', {content_type, content_encoding, headers, priority, timestamp}).
+-record('P_file', {
+          content_type :: binary(),
+          content_encoding :: binary(),
+          headers :: term(),
+          priority :: term(),
+          reply_to :: term(),
+          message_id :: term(),
+          filename :: term(),
+          timestamp :: term(),
+          cluster_id :: term()
+         }).
+-record('P_stream', {
+          content_type :: binary(),
+          content_encoding :: binary(),
+          headers :: term(),
+          priority :: term(),
+          timestamp :: term()
+         }).
 -record('P_dtx', {}).
--record('P_tunnel', {headers, proxy_name, data_name, durable, broadcast}).
+-record('P_tunnel', {
+          headers :: term(),
+          proxy_name :: binary(),
+          data_name :: binary(),
+          durable :: boolean(),
+          broadcast :: term()
+         }).
 -record('P_test', {}).
