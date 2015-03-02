@@ -49,7 +49,7 @@
           decorators :: term()}). %% transient, recalculated in store/1 (i.e. recovery)
 
 -record(amqqueue, {
-          name, :: binary(), durable :: boolean(), auto_delete :: boolean(),
+          name :: binary(), durable :: boolean(), auto_delete :: boolean(),
           exclusive_owner = none :: atom(), %% immutable
           arguments :: list(),                   %% immutable
           pid :: pid(),                         %% durable (just so we know home node)
