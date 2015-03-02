@@ -14,88 +14,90 @@
 %% Copyright (c) 2007-2014 GoPivotal, Inc.  All rights reserved.
 %%
 
--record(user, {username,
-               tags,
-               auth_backend, %% Module this user came from
-               impl          %% Scratch space for that module
+-record(user, {username :: binary(),
+               tags :: list(),
+               auth_backend :: atom(), %% Module this user came from
+               impl :: term()          %% Scratch space for that module
               }).
 
--record(internal_user, {username, password_hash, tags}).
--record(permission, {configure, write, read}).
--record(user_vhost, {username, virtual_host}).
--record(user_permission, {user_vhost, permission}).
+-record(internal_user, {username :: binary(), password_hash :: binary(), tags :: list()}).
+-record(permission, {configure :: term(), write :: boolean(), read :: boolean()}).
+-record(user_vhost, {username :: binary(), virtual_host :: binary()}).
+-record(user_permission, {user_vhost :: binary(), permission :: #permission{} }).
 
--record(vhost, {virtual_host, dummy}).
+-record(vhost, {virtual_host :: binary(), dummy :: term()}).
 
 -record(content,
-        {class_id,
-         properties, %% either 'none', or a decoded record/tuple
-         properties_bin, %% either 'none', or an encoded properties binary
+        {class_id :: term(),
+         properties :: term(), %% either 'none', or a decoded record/tuple
+         properties_bin :: binary(), %% either 'none', or an encoded properties binary
          %% Note: at most one of properties and properties_bin can be
          %% 'none' at once.
-         protocol, %% The protocol under which properties_bin was encoded
-         payload_fragments_rev %% list of binaries, in reverse order (!)
+         protocol :: binary(), %% The protocol under which properties_bin was encoded
+         payload_fragments_rev :: list() %% list of binaries, in reverse order (!)
          }).
 
--record(resource, {virtual_host, kind, name}).
+-record(resource, {virtual_host :: binary(), kind :: atom(), name :: binary()}).
 
 %% fields described as 'transient' here are cleared when writing to
 %% rabbit_durable_<thing>
 -record(exchange, {
-          name, type, durable, auto_delete, internal, arguments, %% immutable
-          scratches,    %% durable, explicitly updated via update_scratch/3
-          policy,       %% durable, implicitly updated when policy changes
-          decorators}). %% transient, recalculated in store/1 (i.e. recovery)
+          name :: binary(), type :: atom(), durable :: boolean(), auto_delete :: boolean(),
+          internal :: boolean(), arguments :: list(), %% immutable
+          scratches :: list(),    %% durable, explicitly updated via update_scratch/3
+          policy :: term(),       %% durable, implicitly updated when policy changes
+          decorators :: term()}). %% transient, recalculated in store/1 (i.e. recovery)
 
 -record(amqqueue, {
-          name, durable, auto_delete, exclusive_owner = none, %% immutable
-          arguments,                   %% immutable
-          pid,                         %% durable (just so we know home node)
-          slave_pids, sync_slave_pids, %% transient
-          down_slave_nodes,            %% durable
-          policy,                      %% durable, implicit update as above
-          gm_pids,                     %% transient
-          decorators,                  %% transient, recalculated as above
-          state}).                     %% durable (have we crashed?)
+          name, :: binary(), durable :: boolean(), auto_delete :: boolean(),
+          exclusive_owner = none :: atom(), %% immutable
+          arguments :: list(),                   %% immutable
+          pid :: pid(),                         %% durable (just so we know home node)
+          slave_pids :: list(), sync_slave_pids :: list(), %% transient
+          down_slave_nodes :: list(),            %% durable
+          policy :: term(),                      %% durable, implicit update as above
+          gm_pids :: list(),                     %% transient
+          decorators :: list(),                  %% transient, recalculated as above
+          state :: term()}).                     %% durable (have we crashed?)
 
--record(exchange_serial, {name, next}).
+-record(exchange_serial, {name :: binary(), next :: term() }).
 
 %% mnesia doesn't like unary records, so we add a dummy 'value' field
--record(route, {binding, value = const}).
--record(reverse_route, {reverse_binding, value = const}).
+-record(route, {binding :: binary(), value = const :: atom()}).
+-record(reverse_route, {reverse_binding :: binary(), value = const :: atom()}).
 
--record(binding, {source, key, destination, args = []}).
--record(reverse_binding, {destination, key, source, args = []}).
+-record(binding, {source :: binary(), key :: binary(), destination :: binary(), args = [] :: list()}).
+-record(reverse_binding, {destination :: binary(), key :: binary(), source :: binary(), args = []}).
 
--record(topic_trie_node, {trie_node, edge_count, binding_count}).
--record(topic_trie_edge, {trie_edge, node_id}).
--record(topic_trie_binding, {trie_binding, value = const}).
+-record(topic_trie_node, {trie_node :: term(), edge_count :: integer(), binding_count :: integer()}).
+-record(topic_trie_edge, {trie_edge :: term(), node_id :: term()}).
+-record(topic_trie_binding, {trie_binding :: term(), value = const :: atom()}).
 
--record(trie_node, {exchange_name, node_id}).
--record(trie_edge, {exchange_name, node_id, word}).
--record(trie_binding, {exchange_name, node_id, destination, arguments}).
+-record(trie_node, {exchange_name :: binary(), node_id :: term()}).
+-record(trie_edge, {exchange_name :: binary(), node_id :: term(), word :: term()}).
+-record(trie_binding, {exchange_name :: binary(), node_id :: term(), destination :: binary(), arguments :: list()}).
 
--record(listener, {node, protocol, host, ip_address, port}).
+-record(listener, {node :: binary(), protocol :: binary(), host :: binary(), ip_address :: term(), port :: integer()}).
 
--record(runtime_parameters, {key, value}).
+-record(runtime_parameters, {key :: term(), value :: term()}).
 
--record(basic_message, {exchange_name, routing_keys = [], content, id,
-                        is_persistent}).
+-record(basic_message, {exchange_name :: binary(), routing_keys = [] :: list(),
+                        content :: binary(), id :: term(), is_persistent :: boolean()}).
 
--record(ssl_socket, {tcp, ssl}).
--record(delivery, {mandatory, confirm, sender, message, msg_seq_no}).
--record(amqp_error, {name, explanation = "", method = none}).
+-record(ssl_socket, {tcp :: term(), ssl :: term()}).
+-record(delivery, {mandatory :: term(), confirm :: term(), sender :: term(), message :: term(), msg_seq_no :: term()}).
+-record(amqp_error, {name :: term(), explanation = "" :: string(), method = none :: atom()}).
 
--record(event, {type, props, reference = undefined, timestamp}).
+-record(event, {type :: atom(), props :: term(), reference = undefined :: term(), timestamp :: term()}).
 
--record(message_properties, {expiry, needs_confirming = false, size}).
+-record(message_properties, {expiry :: term(), needs_confirming = false :: boolean(), size :: integer()}).
 
--record(plugin, {name,          %% atom()
-                 version,       %% string()
-                 description,   %% string()
-                 type,          %% 'ez' or 'dir'
-                 dependencies,  %% [{atom(), string()}]
-                 location}).    %% string()
+-record(plugin, {name :: atom(),                      %% atom()
+                 version :: string(),                 %% string()
+                 description :: string(),             %% string()
+                 type :: atom(),                      %% 'ez' or 'dir'
+                 dependencies: [{atom(), string()}],  %% [{atom(), string()}]
+                 location :: string()}).              %% string()
 
 %%----------------------------------------------------------------------------
 
